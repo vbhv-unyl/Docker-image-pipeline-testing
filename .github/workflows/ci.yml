@@ -1,8 +1,10 @@
 name: CI/CD Pipeline
+
 on:
   push:
     branches:
       - main
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -51,7 +53,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
@@ -59,3 +61,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: stacklifo/hello-app:latest
+          pull: true
+          cache-from: type=registry,ref=stacklifo/hello-app:cache
+          cache-to: type=inline
